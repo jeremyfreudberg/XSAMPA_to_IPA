@@ -1,5 +1,5 @@
 # unicode!!!
-DICTIONARY  = {'m':'m',
+correspondence  = {'m':'m',
          'F':'ɱ',
          'n':'n',
          'n`':'ɳ',
