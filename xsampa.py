@@ -1,29 +1,20 @@
+import sys
+from tkinter import *
+import pyperclip
+
 # unicode!!!
 correspondence = {'m':'m',
          'F':'ɱ',
          'n':'n',
-         'n`':'ɳ',
-         'J':'ɲ',
          'N':'ŋ',
-         'N\\':'ɴ',
          'p':'p',
          'b':'b',
-         'p_d':'p̪',
-         'b_d':'b̪',
          't':'t',
          'd':'d',
-         't`':'ʈ̪',
-         'd`':'ɖ',
-         'c':'c',
-         'J\\':'ɟ',
          'k':'k',
          'g':'g',
          'q':'q',
-         'G\\':'ɢ',
-         '>\\':'ʡ',
          '?':'ʔ',
-         'p\\':'ɸ',
-         'B':'β',
          'f':'f',
          'v':'v',
          'T':'θ',
@@ -32,134 +23,74 @@ correspondence = {'m':'m',
          'z':'z',
          'S':'ʃ',
          'Z':'ʒ',
-         's`':'ʂ',
-         'z`':'ʐ',
-         'C':'ç',
-         'j\\':'ʝ',
          'x':'x',
          'G':'ɣ',
-         'X':'χ',
-         'R':'ʁ',
-         'X\\':'ħ',
-         '?\\':'ʕ',
-         'H\\':'ʜ',
-         '<\\':'ʢ',
          'h':'h',
-         'h\\':'ɦ',
-         'B_o':'β̞',
-         'v\\':'ʋ',
          'r\\':'ɹ',
-         'r\\`':'ɻ',
          'j':'j',
-         'M\\':'ɰ',
-         'B\\':'ʙ',
          'r':'r',
-         'R\\':'ʀ',
          '4':'ɾ',
-         'r`':'ɽ',
-         'K':'ɬ',
-         'K\\':'ɮ',
          'l':'l',
-         'l`':'ɭ',
-         'L':'ʎ',
-         'L\\':'ʟ',
-         'l\\':'ɺ',
          'W':'ʍ',
-         'w':'w',
-         'H':'ɥ',
-         's\\':'ɕ',
-         'z\\':'ʑ',
-         'x\\':'ɧ',
-         'O\\':'ʘ',
-         '|\\':'ǀ',
-         '!\\':'!',
-         '=\\':'ǂ',
-         '|\\|\\':'ǁ',
-         'b_<':'ɓ',
-         'd_<':'ɗ',
-         'J\\_<':'ʄ',
-         'g_<':'ɠ',
-         'G\\_<':'ʛ',
-         'p_>':'pʼ',
-         't_>':'ť',
-         'k_>':'kʼ',
-         's_>':'sʼ',
+         'w':'w',      
          'i':'i',
-         'y':'y',
          '1':'ɨ',
          '}':'ʉ',
-         'M':'ɯ',
          'u':'u',
          'I':'ɪ',
-         'Y':'ʏ',
-         'I\\':'ɪ̈',
-         'U\\':'ʊ̈',
          'U':'ʊ',
          'e':'e',
-         '2':'ø',
-         '@\\':'ɘ',
-         '8':'ɵ',
-         '7':'ɤ',
          'o':'o',
          '@':'ə',
          'E':'ɛ',
-         '9':'œ',
          '3':'ɜ',
-         '3\\':'ɞ',
          'V':'ʌ',
          'O':'ɔ',
          '{':'æ',
          '6':'ɐ',
          'a':'a',
-         '&':'ɶ',
          'A':'ɑ',
          'Q':'ɒ'}
 
-can_be_multichar = ['z', 'b', 'p', '<', 'O', 'j', 'J', 'G', 'd', 'g', '!', '3', 'z', 'v', 'r', '=',\
-                    'b', 'B', 'l', 's', 'G', 'I', 'l', 's', 'r', 'p', 'r', 'n', 'U', '@', 'R', 'M', \
-                    't', '>', 'N', 'p', '|', 'x', 'J', 'X', '|', 't', 'H', 's', '?', 'L', 'd', 'k', 'B', 'h', 'K']
+# The only multichar symbol is 'r\'
 
-
-single_chars_only = ['E', '7', 'Q', 'F', 'o', 'a', '9', 'f', 'e', 'c', 'm', 'q', '4', 'V', 'W', '8', 'Z', '{', \
-                      'A', '2', '6', 'T', '}', 'i', 'Y', 'D', 'C', 'w', '&', '1', 'u', 'S', 'y']
-
-multi = [('B', '\\', 1), ('O', '', 0), ('s', '`', 1), ('?', '', 0), ('L', '\\', 1), ('r', '\\', 1), ('@', '\\', 1), \
- ('k', '', 0), ('z', '`', 1), ('t', '_>', 2), ('v', '', 0), ('R', '', 0), ('|', '\\', 1), ('N', '', 0), ('b', '_<', 2), \
- ('r', '', 0), ('z', '\\', 1), ('b', '_d', 2), ('r', '\\`', 2), ('H', '\\', 1), ('@', '', 0), ('h', '\\', 1), ('p', '', 0), \
- ('B', '', 0), ('l', '', 0), ('X', '', 0), ('!', '\\', 1), ('M', '\\', 1), ('L', '', 0), ('s', '_>', 2), ('j', '\\', 1), \
- ('k', '_>', 2), ('d', '`', 1), ('|', '\\|\\', 3), ('t', '', 0), ('n', '', 0), ('h', '', 0), ('=', '\\', 1), ('s', '', 0),\
- ('?', '\\', 1), ('G', '', 0), ('3', '\\', 1), ('z', '', 0), ('U', '', 0), ('d', '', 0), ('g', '', 0), ('j', '', 0), \
- ('I', '\\', 1), ('M', '', 0), ('H', '', 0), ('G', '\\', 1), ('K', '', 0), ('N', '\\', 1), ('l', '`', 1), ('r', '`', 1), \
- ('K', '\\', 1), ('J', '', 0), ('d', '_<', 2), ('O', '\\', 1), ('J', '\\_<', 3), ('3', '', 0), ('s', '\\', 1), ('U', '\\', 1), \
- ('p', '_>', 2), ('<', '\\', 1), ('p', '_d', 2), ('G', '\\_<', 3), ('>', '\\', 1), ('I', '', 0), ('x', '', 0), ('B', '_o', 2), \
- ('g', '_<', 2), ('X', '\\', 1), ('J', '\\', 1), ('v', '\\', 1), ('l', '\\', 1), ('n', '`', 1), ('R', '\\', 1), ('b', '', 0), \
- ('x', '\\', 1), ('t', '`', 1), ('p', '\\', 1)]
-
-def translate(s): # still has issues with certain things like b_>, etc.
-    result = []
+def translate(s):
+    result = ''
     for i in range(len(s)):
-        if s[i] in single_chars_only:
-            result += [correspondence[s[i]]]
-        elif s[i] in ['`','\\','_','<','>']:
+        if s[i] != 'r' and s[i] != '\\':
+            try:
+                result += correspondence[s[i]]
+            except KeyError:
+                result = "I don't think that was valid X-SAMPA (for English, anyway)."
+                break
+        elif s[i] == '\\':
             pass
-        else:
-            possible = []
-            for x in multi:
-                if x[0] == s[i]:
-                    possible += [x]
-            if len(possible) == 1:
-                result += correspondence[s[i]+possible[0][1]]
-            else:
-                for y in possible:
-                    if y[2] != 0:
-                        end = 1 + y[2]
-                        slice_test = s[i+1:i+end]
-                        if s[i+1:i+end] == y[1]:
-                            result += correspondence[s[i] + y[1]]
-                            break
-                        else:
-                            result += correspondence[s[i]]
-
+        else: # s[i] = 'r'
+            try:         
+                if s[i+1] == '\\':
+                    result += correspondence['r\\']
+                else:
+                    result += correspondence['r']
+            except IndexError:
+                result += correspondence['r']
+                
     return result
+
+try:
+    translation = (translate(sys.argv[1]))
+except:
+    translation = 'No text entered'
+
+def copy_to_clipboard():
+    pyperclip.copy(translation)
+    
+root = Tk()
+root.wm_title('Result')
+e = Entry(root)
+e.insert(0,translation)
+e.pack()
+b = Button(root, text="Copy to clipboard", command=copy_to_clipboard)
+b.pack()
+root.mainloop()
             
     
