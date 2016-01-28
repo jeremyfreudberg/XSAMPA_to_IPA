@@ -135,7 +135,7 @@ multi = [('B', '\\', 1), ('O', '', 0), ('s', '`', 1), ('?', '', 0), ('L', '\\', 
  ('g', '_<', 2), ('X', '\\', 1), ('J', '\\', 1), ('v', '\\', 1), ('l', '\\', 1), ('n', '`', 1), ('R', '\\', 1), ('b', '', 0), \
  ('x', '\\', 1), ('t', '`', 1), ('p', '\\', 1)]
 
-def translate(s):
+def translate(s): # still has issues with certain things like b_>, etc.
     result = []
     for i in range(len(s)):
         if s[i] in single_chars_only:
